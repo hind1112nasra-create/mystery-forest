@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mystery of the Lost Forest</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Georgia, serif;
+  background: linear-gradient(135deg, #071d20, #123b36, #172b3b);
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.game {
+  max-width: 650px;
+  width: 100%;
+  background: rgba(10, 25, 28, 0.94);
+  border: 1px solid #b7a16b;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 10px 40px #0008;
+}
+
+h1 { color: #e6c987; }
+
+.story {
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 25px 0;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin: 12px 0;
+  border: 1px solid #d8bd80;
+  border-radius: 12px;
+  background: #244c43;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #947b4d;
+  transform: scale(1.02);
+}
+
+.restart {
+  background: #70532e;
+}
+
+#ending {
+  color: #e6c987;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+  <h1>🌲 The Mystery of the Lost Forest</h1>
+  <p>AN INTERACTIVE ADVENTURE</p>
+
+  <div class="story" id="story">
+    You wake up in a mysterious forest.
+    You don't remember how you got here.
+    Suddenly, you see two paths.
+    What will you do?
+  </div>
+
+  <div id="choices">
+    <button onclick="choose('cave')">
+      🕯️ Enter the dark cave
+    </button>
+
+    <button onclick="choose('river')">
+      🌊 Follow the blue river
+    </button>
+  </div>
+
+  <p id="ending"></p>
+  <button class="restart" onclick="restart()">
+    ↻ Play Again
+  </button>
+</div>
+
+<script>
+const scenes = {
+
+  cave: {
+    text: "Inside the cave, you discover a golden key and a mysterious door. What will you do?",
+    choices: [
+      { text: "🔑 Open the door", next: "fairy" },
+      { text: "💎 Take the treasure and leave", next: "treasure" }
+    ]
+  },
+
+  river: {
+    text: "You follow the river and find a hidden village. The villagers need your help. What will you do?",
+    choices: [
+      { text: "❤️ Help the villagers", next: "hero" },
+      { text: "🚶 Leave the village", next: "alone" }
+    ]
+  },
+
+  fairy: {
+    text: "✨ You open the door and find a magical fairy trapped inside. You free her! She gives you a magical power. You become the Guardian of the Forest!",
+    choices: [],
+    ending: "THE HEROIC ENDING 🏆"
+  },
+
+  treasure: {
+    text: "💰 You take the treasure, but the cave begins to collapse! You escape with the gold, but the forest remains cursed.",
+    choices: [],
+    ending: "THE GREEDY ENDING 💰"
+  },
+
+  hero: {
+    text: "🌟 You help the villagers defeat the dark shadow. They celebrate you as their hero, and you find a new home!",
+    choices: [],
+    ending: "THE HAPPY ENDING ❤️"
+  },
+
+  alone: {
+    text: "🌙 You leave the village and continue walking. You find your way home, but you will always wonder what happened to the villagers.",
+    choices: [],
+    ending: "THE MYSTERIOUS ENDING 🌙"
+  }
+};
+
+function choose(sceneName) {
+  const scene = scenes[sceneName];
+
+  document.getElementById("story").textContent = scene.text;
+
+  const choices = document.getElementById("choices");
+  choices.innerHTML = "";
+
+  document.getElementById("ending").textContent =
+    scene.ending || "";
+
+  scene.choices.forEach(choice => {
+    const button = document.createElement("button");
+    button.textContent = choice.text;
+    button.onclick = () => choose(choice.next);
+    choices.appendChild(button);
+  });
+}
+
+function restart() {
+  document.getElementById("story").textContent =
+    "You wake up in a mysterious forest. You don't remember how you got here. Suddenly, you see two paths. What will you do?";
+
+  document.getElementById("ending").textContent = "";
+
+  document.getElementById("choices").innerHTML = `
+    <button onclick="choose('cave')">
+      🕯️ Enter the dark cave
+    </button>
+    <button onclick="choose('river')">
+      🌊 Follow the blue river
+    </button>
+  `;
+}
+</script>
+
+</body>
+</html>
